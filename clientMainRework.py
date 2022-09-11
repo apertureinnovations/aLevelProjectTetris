@@ -10,7 +10,7 @@ class Tetromino:
     # Parameters ( current time value, sets it if not taken as var )
     # Return Values ( none, defining variables not returning them )
     # Created ( 10 / 06 / 22 )
-    def __init__(self, curTimeVal=1):
+    def __init__(self, curTimeVal=1, start=(0,0)):
 
         self.transposedList = []
         self._shapeList = {
@@ -24,8 +24,8 @@ class Tetromino:
         }
         self._shape = random.choice(list(self._shapeList.values()))
         self._trueShape = []
-        self.xMod = 0
-        self.yMod = 0
+        self.xMod = start[0]
+        self.yMod = start[1]
         self.fixedTime = curTimeVal
         self.blockSize = 30, 30
 
@@ -130,11 +130,11 @@ class Tetromino:
     # Created ( 10 / 06 / 22 )
     def translate(self):
 
-        self._trueShape = []
+        trueShape = []
 
         for x, y in self._shape:
-            self._trueShape.append((x + self.xMod, y + self.yMod))
-
+            trueShape.append((x + self.xMod, y + self.yMod))
+        self._shape=trueShape
     # FunName ( shape function defined as variable )
     # Desc ( Utilises the @property to make this function a variable, is used for the pygameMain file to access _trueShape. It does NOT allow for changes to _trueShape )
     # Author ( Jake )
@@ -144,7 +144,7 @@ class Tetromino:
     @property
     def shape(self):
 
-        return self._trueShape
+        return self._shape
 
 
 class Board:

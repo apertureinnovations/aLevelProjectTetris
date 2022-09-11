@@ -2,6 +2,7 @@ import threading
 from datetime import datetime
 import pygame
 from clientMainRework import Tetromino, Board, PygameData
+from gameObjects import TGame
 
 
 def scoreSys(boardParameters, curScore=0):
@@ -39,14 +40,18 @@ def pygameProgram():
     holdCounter = 0
     currentLinesCleared = 0
     currentMultiplierTimeValue = 1
-    tetrominoObject = Tetromino(currentMultiplierTimeValue)
-    tetrominoObject.xMod += (boardParameters.startingCoordinates[0])
-    tetrominoObject.yMod += (boardParameters.startingCoordinates[1])
+    tetrominoObject = Tetromino(currentMultiplierTimeValue, boardParameters.startingCoordinates)
+    #tetrominoObject.xMod += (boardParameters.startingCoordinates[0])
+    #tetrominoObject.yMod += (boardParameters.startingCoordinates[1])
     nextPieceObject = 0
     lastMoveDown = 0
     running = True
     target = 0
 
+
+    gameObject=TGame()
+
+    
     while running:
 
         gameParameters.displayScreen.fill((0, 0, 0))
@@ -54,17 +59,21 @@ def pygameProgram():
 
         gameParameters.drawRightMenu((360, 0), "assets/menuRight.png")
 
-        if nextPieceObject == tetrominoObject or nextPieceObject == 0:
-            nextPieceObject = nextPiece(currentMultiplierTimeValue)
+        # if nextPieceObject == tetrominoObject or nextPieceObject == 0:
+        #     nextPieceObject = nextPiece(currentMultiplierTimeValue)
 
-        nextPieceObject.translate()
-        gameParameters.drawObjectRight((440, 450), nextPieceObject.blockSize, nextPieceObject.shape,
-                                       nextPieceObject.colour)
+        #nextPieceObject.translate()
+        gameParameters.drawObjectRight((440, 450),
+                                       gameObject.nextTetromino.blockSize,
+                                       gameObject.nextTetromino.shape,
+                                       gameObject.nextTetromino.colour)
 
-        if holdingPieceData is not None:
-            holdingPieceData.translate()
-            gameParameters.drawObjectRight((560, 240), holdingPieceData.blockSize, holdingPieceData.shape,
-                                           holdingPieceData.colour)
+        if gameObject.held:
+            #holdingPieceData.translate()
+            gameParameters.drawObjectRight((560, 240),
+                                           gameObject.held.blockSize,
+                                           gameObject.held.shape,
+                                           gameObject.held.colour)
 
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
@@ -72,11 +81,7 @@ def pygameProgram():
             if event.type == pygame.KEYDOWN:
 
                 if event.key == pygame.K_RIGHT:
-                    tetrominoObject.moveRight()
-                    tetrominoObject.translate()
-                    if boardParameters.collisionLeftRight(tetrominoObject.shape, "right"):
-                        tetrominoObject.moveLeft()
-                        tetrominoObject.translate()
+                    gameObject.key_right()
 
                 if event.key == pygame.K_LEFT:
                     tetrominoObject.moveLeft()
