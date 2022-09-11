@@ -1,4 +1,5 @@
 from clientMainRework import Board, Tetromino
+import json
 
 
 class TGame(object):
@@ -10,14 +11,65 @@ class TGame(object):
         self.heldFresh = True
         self.clearedCount = 0
         self.currentScore = 0
+        self.scoreMultiplier = 0
+        self.nextTetromino = None
         self.currentTetromino = Tetromino(self.currentTimeScale, start=self.board.startingCoordinates)
         self.scoreList = [0, 100, 300, 500, 800]
         self.generateNext()
-        # score
-        # board
-        # held
-        # etc
 
+    def grabTime(self):
+        packageTimeJSON = json.dumps(self.currentTimeScale)
+        return packageTimeJSON
+
+    def currentBoardState(self):
+        packageGameState = {"blockSize": self.currentTetromino.blockSize, "boardFixed": self.board.fixed}
+        packageGameStateJSON = json.dumps(packageGameState)
+        return packageGameStateJSON
+
+    def currentTetrominoState(self):
+        packageStateJSON = json.dumps(self.currentTetromino.state())
+        return packageStateJSON
+
+    def currentNextState(self):
+        packageStateJSON = json.dumps(self.nextTetromino.state())
+        return packageStateJSON
+
+    def currentHoldState(self):
+        packageStateJSON = json.dumps(self.held.state())
+        return packageStateJSON
+
+    def getScores(self):
+        self.scoreMultiplier = self.scoreSys()
+        self.clearedCount += self.scoreMultiplier
+        self.currentScore += self.scoreList[self.scoreMultiplier]
+        packageScore = {"clearCount": self.clearedCount, "currentScore": self.currentScore}
+        packageScoreJSON = json.dumps(packageScore)
+        return packageScoreJSON
+
+    def scoreSys(self, curScore=0):
+        for y in range(self.board.boardSize[1]):
+            y += 1
+            for x in range(self.board.boardSize[0]):
+                x += 1
+                if not (x, y) in self.board.fixed:
+                    break
+            else:
+                tempList = []
+                for xVal, yVal in self.board.fixed:
+                    if yVal < y:
+                        tempList.append((xVal, yVal + 1))
+                    elif yVal > y:
+                        tempList.append((xVal, yVal))
+                self.board.fixed = tempList
+                curScore += 1
+
+                curScore = self.scoreSys(curScore)
+
+        return curScore
+
+    @property
+    def blockSize(self):
+        return self.currentTetromino.blockSize
 
     def keyRight(self):
         self.currentTetromino.moveRight()
@@ -41,9 +93,9 @@ class TGame(object):
             self.currentTetromino.horizontalFlip()
             self.currentTetromino.transpose()
 
-
     def generateNext(self):
-        self.nextTetromino=Tetromino(self.currentTimeScale, start=self.board.startingCoordinates)
+        self.nextTetromino = Tetromino(self.currentTimeScale, start=self.board.startingCoordinates)
+
     def keyDown(self):
         print("here")
         while not self.board.collision(self.currentTetromino.shape):
@@ -53,7 +105,7 @@ class TGame(object):
         self.currentTetromino.translate()
         self.board.setFixed(self.currentTetromino.shape)
         self.currentTetromino = self.nextTetromino
-        #self.currentTetromino.translate()
+        # self.currentTetromino.translate()
         self.generateNext()
         self.heldFresh = True
 

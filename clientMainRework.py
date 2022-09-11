@@ -39,6 +39,9 @@ class Tetromino:
             "assets/tetrisBlockPurple.png"
         ])
 
+    def state(self):
+        return {"shape": self._trueShape, "blockSize": self.blockSize, "colour": self.colour}
+
     # FunName ( Transpose Function )
     # Desc ( transposes an object via swapping x and y position )
     # Author ( Jake )
