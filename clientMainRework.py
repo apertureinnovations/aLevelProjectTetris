@@ -39,8 +39,23 @@ class Tetromino:
             "assets/tetrisBlockPurple.png"
         ])
 
+    # FunName ( Get State Function )
+    # Desc ( returns data relating to the tetromino's state )
+    # Author ( Jake )
+    # Parameters ( none )
+    # Return Values (shape, block size, colour )
+    # Created ( 12 / 09 / 22 )
     def state(self):
         return {"shape": self._trueShape, "blockSize": self.blockSize, "colour": self.colour}
+
+    # FunName ( Get State Function )
+    # Desc ( returns data relating to the tetromino's state - takes the base value for shape instead of the actual coordinates.)
+    # Author ( Jake )
+    # Parameters ( none )
+    # Return Values (shape, block size, colour )
+    # Created ( 12 / 09 / 22 )
+    def shapeState(self):
+        return {"shape": self._shape, "blockSize": self.blockSize, "colour": self.colour}
 
     # FunName ( Transpose Function )
     # Desc ( transposes an object via swapping x and y position )

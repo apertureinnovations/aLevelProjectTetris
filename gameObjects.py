@@ -31,11 +31,11 @@ class TGame(object):
         return packageStateJSON
 
     def currentNextState(self):
-        packageStateJSON = json.dumps(self.nextTetromino.state())
+        packageStateJSON = json.dumps(self.nextTetromino.shapeState())
         return packageStateJSON
 
     def currentHoldState(self):
-        packageStateJSON = json.dumps(self.held.state())
+        packageStateJSON = json.dumps(self.held.shapeState())
         return packageStateJSON
 
     def getScores(self):

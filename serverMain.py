@@ -1,6 +1,6 @@
 import json
 import socket
-from threading import Thread, ThreadError
+import threading
 
 
 class Listener:

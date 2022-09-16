@@ -63,6 +63,7 @@ def pygameProgram():
 
                 if event.key == pygame.K_x:
                     gameParameters.volIncr()
+
         currentSpeed = json.loads(gameObject.grabTime())
         if (datetime.timestamp(datetime.now()) - lastMoveDown) > currentSpeed:
             lastMoveDown = datetime.timestamp(datetime.now())
@@ -73,8 +74,8 @@ def pygameProgram():
 
         scoreData = json.loads(gameObject.getScores())
 
-        gameParameters.blitText((380, 580), str(scoreData["clearCount"]), ["arial", 40])
-        gameParameters.blitText((450, 580), ("Lines Cleared: " + str(scoreData["currentScore"])), ["arial", 40])
+        gameParameters.blitText((380, 580), str(scoreData["currentScore"]), ["arial", 40])
+        gameParameters.blitText((450, 580), ("Lines Cleared: " + str(scoreData["clearCount"])), ["arial", 40])
 
         tetraState = json.loads(gameObject.currentTetrominoState())
 
@@ -88,7 +89,6 @@ def pygameProgram():
                                   "assets/tetrisBlockComplete.png")
 
         gameParameters.refreshScreen()
-        # print(f"Looped, running is now {running}")
 
     pygame.quit()
 
