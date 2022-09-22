@@ -12,6 +12,7 @@ def pygameProgram():
     lastMoveDown = 0
     running = True
     end = None
+    sentData = True
     while running:
 
         gameParameters.displayScreen.fill((0, 0, 0))
@@ -71,9 +72,11 @@ def pygameProgram():
                 if event.key == pygame.K_UP:
                     gameObject.keyUp()
 
-                if event.key == pygame.K_DOWN:
-                    running = gameObject.keyDown()
+                if event.key == pygame.K_SPACE:
+                    running = gameObject.keySpace()
 
+                if event.key == pygame.K_DOWN:
+                    sentData = gameObject.keyDown(sentData)
                 if event.key == pygame.K_ESCAPE:
                     running = False
 

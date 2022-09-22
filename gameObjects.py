@@ -21,6 +21,7 @@ class TGame(object):
         self.currentScore = 0
         self.scoreMultiplier = 0
         self.nextTetromino = None
+        self.currentTimeScale = 1
         self.currentTetromino = Tetromino(self.currentTimeScale, start=self.board.startingCoordinates)
         self.scoreList = [0, 100, 300, 500, 800]
         self.generateNext()
@@ -182,7 +183,7 @@ class TGame(object):
     # Parameters ( none )
     # Return Values ( True or false depending on collision detection )
     # Created ( 22 / 09 / 22 )
-    def keyDown(self):
+    def keySpace(self):
         print("here")
         while not self.board.collision(self.currentTetromino.shape):
             self.currentTetromino.moveDown()
@@ -198,6 +199,23 @@ class TGame(object):
         if self.board.collision(self.currentTetromino.shape):
             return False
         return True
+
+        # FunName ( increases the acceleration )
+        # Desc ( This function accelerates the object. )
+        # Author ( Jake )
+        # Parameters ( none )
+        # Return Values ( the toggle indicator )
+        # Created ( 22 / 09 / 22 )
+
+    def keyDown(self, sentData):
+        if sentData:
+            self.currentTimeScale = 0.1
+            sentData = False
+        else:
+            self.currentTimeScale = 1
+            sentData = True
+
+        return sentData
 
     # FunName ( Held Object Function )
     # Desc ( This function holds an object or creates a new object and stores the previous object
@@ -249,6 +267,7 @@ class TGame(object):
                 return False
         return True
 
+    """
     # FunName ( Current Speed Calculator )
     # Desc ( Calculates the rate at which tetronimo objects fall. Is classified as a variable. )
     # Author ( Jake )
@@ -257,7 +276,11 @@ class TGame(object):
     # Created ( 22 / 09 / 22 )
     @property
     def currentTimeScale(self):
+
+        return 1;
+
         if self.clearedCount == 0:
             return 1
         else:
             return 1 + self.clearedCount / 25
+    """
