@@ -3,6 +3,14 @@ import json
 
 
 class TGame(object):
+
+    # FunName ( Init - Startup Function )
+    # Desc ( This function gets all the base parameters needed for the tetris game to run and sets up variables
+    # that functions later down the line will use.)
+    # Author ( Jake )
+    # Parameters ( none )
+    # Return Values ( none )
+    # Created ( 22 / 09 / 22 )
     def __init__(self):
         """ Initialise all game data """
         self.board = Board()
@@ -17,27 +25,63 @@ class TGame(object):
         self.scoreList = [0, 100, 300, 500, 800]
         self.generateNext()
 
+    # FunName ( Fetch Speed Function )
+    # Desc ( fetches the current timescale of the tetris game )
+    # Author ( Jake )
+    # Parameters ( none )
+    # Return Values ( Current Speed )
+    # Created ( 22 / 09 / 22 )
     def grabTime(self):
         packageTimeJSON = json.dumps(self.currentTimeScale)
         return packageTimeJSON
 
+    # FunName ( Fetch Board State Function )
+    # Desc ( This function fetches the current board state of the tetris game )
+    # Author ( Jake )
+    # Parameters ( none)
+    # Return Values ( Current Board State )
+    # Created ( 22 / 09 / 22 )
     def currentBoardState(self):
         packageGameState = {"blockSize": self.currentTetromino.blockSize, "boardFixed": self.board.fixed}
         packageGameStateJSON = json.dumps(packageGameState)
         return packageGameStateJSON
 
+    # FunName ( Fetch Current Tetronimo Object State Function )
+    # Desc ( This function fetches the current tetronimo object state )
+    # Author ( Jake )
+    # Parameters ( none )
+    # Return Values ( Current Tetronimo state )
+    # Created ( 22 / 09 / 22 )
     def currentTetrominoState(self):
         packageStateJSON = json.dumps(self.currentTetromino.state())
         return packageStateJSON
 
+    # FunName ( Fetch Next Tetronimo Object State Function)
+    # Desc ( This function fetches the next tetronimo object state )
+    # Author ( Jake )
+    # Parameters ( none )
+    # Return Values ( Next Tetronimo state )
+    # Created ( 22 / 09 / 22 )
     def currentNextState(self):
         packageStateJSON = json.dumps(self.nextTetromino.shapeState())
         return packageStateJSON
 
+    # FunName ( Fetch Held Tetronimo Object State Function )
+    # Desc ( This function fetches the current held tetronimo object state )
+    # Author ( Jake )
+    # Parameters ( none )
+    # Return Values ( Held Tetronimo state )
+    # Created ( 22 / 09 / 22 )
     def currentHoldState(self):
         packageStateJSON = json.dumps(self.held.shapeState())
         return packageStateJSON
 
+    # FunName ( Score Fetching Function )
+    # Desc ( This function fetches the scores from another function and returns the relevant data. )
+    # Author ( Jake )
+    # Parameters ( none )
+    # Return Values ( Packaged Score Data )
+    # Created ( 22 / 09 / 22 )
     def getScores(self):
         self.scoreMultiplier = self.scoreSys()
         self.clearedCount += self.scoreMultiplier
@@ -46,6 +90,12 @@ class TGame(object):
         packageScoreJSON = json.dumps(packageScore)
         return packageScoreJSON
 
+    # FunName ( Score System Function )
+    # Desc ( This function calculates the score using a recursive algorithm to check what degree of score needs to be added. )
+    # Author ( Jake )
+    # Parameters ( itself - current score )
+    # Return Values ( current score )
+    # Created ( 22 / 09 / 22 )
     def scoreSys(self, curScore=0):
         for y in range(self.board.boardSize[1]):
             y += 1
@@ -67,10 +117,22 @@ class TGame(object):
 
         return curScore
 
+    # FunName ( Returning Block Size Function )
+    # Desc ( This function behaves as a variable, returning the size of a block that the tetronimos are made of.)
+    # Author ( Jake )
+    # Parameters ( none )
+    # Return Values ( block size )
+    # Created ( 22 / 09 / 22 )
     @property
     def blockSize(self):
         return self.currentTetromino.blockSize
 
+    # FunName ( Move Right Function )
+    # Desc ( Moves an object right when the key is pressed. )
+    # Author ( Jake )
+    # Parameters ( none )
+    # Return Values ( none )
+    # Created ( 22 / 09 / 22 )
     def keyRight(self):
         self.currentTetromino.moveRight()
         self.currentTetromino.translate()
@@ -78,6 +140,12 @@ class TGame(object):
             self.currentTetromino.moveLeft()
             self.currentTetromino.translate()
 
+    # FunName ( Move Left Function )
+    # Desc ( Moves an object left when the key is pressed. )
+    # Author ( Jake )
+    # Parameters ( none )
+    # Return Values ( none )
+    # Created ( 22 / 09 / 22 )
     def keyLeft(self):
         self.currentTetromino.moveLeft()
         self.currentTetromino.translate()
@@ -85,6 +153,12 @@ class TGame(object):
             self.currentTetromino.moveRight()
             self.currentTetromino.translate()
 
+    # FunName ( Rotate Tetronimo Function )
+    # Desc ( rotates the tetronimo object when the key is pressed. )
+    # Author ( Jake )
+    # Parameters ( none )
+    # Return Values ( none )
+    # Created ( 22 / 09 / 22 )
     def keyUp(self):
         self.currentTetromino.rotateTetromino()
         self.currentTetromino.translate()
@@ -93,9 +167,21 @@ class TGame(object):
             self.currentTetromino.horizontalFlip()
             self.currentTetromino.transpose()
 
+    # FunName ( Creates Next Tetronimo Function )
+    # Desc ( This function generates the next tetronimo object. )
+    # Author ( Jake )
+    # Parameters ( none )
+    # Return Values ( none )
+    # Created ( 22 / 09 / 22 )
     def generateNext(self):
         self.nextTetromino = Tetromino(self.currentTimeScale, start=self.board.startingCoordinates)
 
+    # FunName ( Force Tetronimo Object To Floor Function )
+    # Desc ( This function forces the tetronimo object to the bottom of the playing field. )
+    # Author ( Jake )
+    # Parameters ( none )
+    # Return Values ( True or false depending on collision detection )
+    # Created ( 22 / 09 / 22 )
     def keyDown(self):
         print("here")
         while not self.board.collision(self.currentTetromino.shape):
@@ -113,6 +199,13 @@ class TGame(object):
             return False
         return True
 
+    # FunName ( Held Object Function )
+    # Desc ( This function holds an object or creates a new object and stores the previous object
+    # depending on if it has been used before. It will also check if the object has been switched on that "turn". )
+    # Author ( Jake )
+    # Parameters ( none )
+    # Return Values ( true or false depending on collision detection )
+    # Created ( 22 / 09 / 22 )
     def keyHold(self):
         if self.heldFresh:
             if self.held is None:
@@ -134,6 +227,12 @@ class TGame(object):
                     return False
         return True
 
+    # FunName ( Move Down Function )
+    # Desc ( This function will move the object down - if that is not possible, it creates a new object and fixes the previous in its place.)
+    # Author ( Jake )
+    # Parameters ( none )
+    # Return Values ( Collision True False Data )
+    # Created ( 22 / 09 / 22 )
     def moveAutomatic(self):
         self.currentTetromino.moveDown()
         self.currentTetromino.translate()
@@ -149,6 +248,12 @@ class TGame(object):
                 return False
         return True
 
+    # FunName ( Current Speed Calculator )
+    # Desc ( Calculates the rate at which tetronimo objects fall. Is classified as a variable. )
+    # Author ( Jake )
+    # Parameters ( none )
+    # Return Values ( Current Speed )
+    # Created ( 22 / 09 / 22 )
     @property
     def currentTimeScale(self):
         if self.clearedCount == 0:
