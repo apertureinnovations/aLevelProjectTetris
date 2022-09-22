@@ -1,9 +1,10 @@
 import socket
 import json
 
+
 class SGame:
     def __init__(self):
-        self.hostName = 0.0.0.0
+        self.hostName = "0.0.0.0"
         self.port = 56365
         self.handler = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
         self.handler.connect((self.hostName, self.port))
@@ -11,13 +12,11 @@ class SGame:
 
     def request(self, data):
         self.handler.sendall(data.encode)
-        running = True
-        while running:
+        while True:
             Data = self.handler.recv(1024)
             if not Data:
                 continue
             else:
-                running = False
                 return json.loads(Data.decode())
 
     def getCurrentTetrominoState(self):
@@ -47,4 +46,3 @@ class SGame:
     def getMoveAutomatic(self):
         return self.request("moveAutomatic")
         pass
-

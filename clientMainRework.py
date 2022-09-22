@@ -250,7 +250,7 @@ class PygameData:
         pygame.display.set_caption("Tetris")
         pygame.mixer.init()
         self.bgMusic = pygame.mixer.Sound("assets/tetrisMusic.ogg")
-        self.volLevel = 0.0
+        self.volLevel = 0.05
         self.bgMusic.set_volume(self.volLevel)
         self.bgMusic.play(loops=-1)
 

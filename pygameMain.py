@@ -4,14 +4,37 @@ import pygame
 import json
 from clientMainRework import PygameData
 from gameObjects import TGame
+from serverObjects import SGame
 
 
 def pygameProgram():
     gameParameters = PygameData("assets/tetrisLogo.png")
     lastMoveDown = 0
     running = True
-    gameObject = TGame()
-    blockSize = json.loads(gameObject.currentTetrominoState())
+    end = None
+    while running:
+
+        gameParameters.displayScreen.fill((0, 0, 0))
+        gameParameters.drawObject((1, 1), [(0, 0)], "assets/tempMenu.png")
+
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                running = False
+                end = True
+            if event.type == pygame.KEYDOWN:
+                if event.key == pygame.K_1:
+                    gameObject = TGame()
+                    running = False
+                elif event.key == pygame.K_2:
+                    gameObject = SGame()
+                    running = False
+
+        gameParameters.refreshScreen()
+
+    if not end:
+        running = True
+        blockSize = json.loads(gameObject.currentTetrominoState())
+
     while running:
 
         gameParameters.displayScreen.fill((0, 0, 0))
@@ -28,7 +51,6 @@ def pygameProgram():
                                        nextState["colour"])
 
         if gameObject.held:
-
             holdState = json.loads(gameObject.currentHoldState())
             gameParameters.drawObjectRight((560, 240),
                                            blockSize["blockSize"],
