@@ -119,10 +119,4 @@ def pygameProgram():
     pygame.quit()
 
 
-def MainProgram():
-    threading.Thread(target=pygameProgram, args=()).start()
-
-    pass
-
-
-MainProgram()
+pygameProgram()

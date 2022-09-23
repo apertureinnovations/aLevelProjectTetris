@@ -27,7 +27,6 @@ class Tetromino:
         self.xMod = start[0]
         self.yMod = start[1]
         self.translate()
-        print(f"Creating tetromino at {self.xMod}/{self.yMod}")
         self.fixedTime = curTimeVal
         self.blockSize = 30, 30
 
