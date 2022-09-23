@@ -28,6 +28,7 @@ def pygameProgram():
                     running = False
                 elif event.key == pygame.K_2:
                     gameObject = SGame()
+                    gameObject.listener()
                     running = False
 
         gameParameters.refreshScreen()

@@ -1,5 +1,6 @@
 import socket
 import json
+import threading
 
 
 class SGame:
@@ -8,6 +9,7 @@ class SGame:
         self.port = 56365
         self.handler = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
         self.handler.connect((self.hostName, self.port))
+        self.currentLine = None
         pass
 
     def request(self, data):
@@ -17,32 +19,74 @@ class SGame:
             if not Data:
                 continue
             else:
-                return json.loads(Data.decode())
+                temp = json.loads(Data.decode())
+                if temp[0] == "confirmed":
+                    return temp
+                else:
+                    continue
+
+    def listener(self):
+        threading.Thread(target=self.listenerContainer, args="")
+        pass
+
+    def listenerContainer(self):
+        while True:
+            Data = self.handler.recv(1024)
+            if not Data:
+                continue
+            else:
+                temp = json.loads(Data.decode())
+                if temp[0] != "confirmed":
+                    self.currentLine = temp
 
     def getCurrentTetrominoState(self):
-        return self.request("currentTetrominoState")
-        pass
+        data = self.request("currentTetrominoState")
+        return data[1]
 
     def getCurrentBoardState(self):
-        return self.request("currentBoardState")
-        pass
+        data = self.request("currentBoardState")
+        return data[1]
 
     def getCurrentNextState(self):
-        return self.request("currentNextState")
-        pass
+        data = self.request("currentNextState")
+        return data[1]
 
     def getCurrentHoldState(self):
-        return self.request("currentHoldState")
-        pass
+        data = self.request("currentHoldState")
+        return data[1]
 
     def getCurrentSpeed(self):
-        return self.request("currentSpeed")
-        pass
+        data = self.request("currentSpeed")
+        return data[1]
 
     def getCurrentScores(self):
-        return self.request("currentScores")
-        pass
+        data = self.request("currentScores")
+        return data[1]
 
     def getMoveAutomatic(self):
-        return self.request("moveAutomatic")
+        data = self.request("moveAutomatic")
+        return data[1]
+
+    def keyRight(self):
+        data = self.request("keyRight")
+        return data[1]
+
+    def keyLeft(self):
+        data = self.request("keyLeft")
+        return data[1]
+
+    def keyUp(self):
+        data = self.request("keyUp")
+        return data[1]
+
+    def keyDown(self):
+        data = self.request("keyDown")
+        return data[1]
+
+    def keySpace(self):
+        return self.request("keySpace")
+        pass
+
+    def keyHold(self):
+        return self.request("keyHold")
         pass
