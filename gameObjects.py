@@ -200,13 +200,12 @@ class TGame(object):
             return False
         return True
 
-        # FunName ( increases the acceleration )
-        # Desc ( This function accelerates the object. )
-        # Author ( Jake )
-        # Parameters ( none )
-        # Return Values ( the toggle indicator )
-        # Created ( 22 / 09 / 22 )
-
+    # FunName ( increases the acceleration )
+    # Desc ( This function accelerates the object. )
+    # Author ( Jake )
+    # Parameters ( none )
+    # Return Values ( the toggle indicator )
+    # Created ( 22 / 09 / 22 )
     def keyDown(self, sentData):
         if sentData:
             self.currentTimeScale = 0.1
