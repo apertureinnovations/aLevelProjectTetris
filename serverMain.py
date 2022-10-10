@@ -1,6 +1,7 @@
 import json
 import socket
 import threading
+from gameObjects import TGame
 
 
 class Listener:
@@ -15,15 +16,10 @@ class Listener:
         self.running = True
         self.log = []
         self.port = 56365
-
-    # FunName (  )
-    # Desc (  )
-    # Author ( Jake )
-    # Parameters (  )
-    # Return Values ( )
-    # Created ( 29 / 09 / 22 )
-    def activeConnections(self):
-        pass
+        self.Data = None
+        self.funNameList = []
+        self.handler = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+        self.handler.bind((self.hostName, self.port))
 
     # FunName (  )
     # Desc (  )
@@ -32,7 +28,12 @@ class Listener:
     # Return Values ( )
     # Created ( 29 / 09 / 22 )
     def incomingConnection(self):
-        pass
+        while True:
+            self.Data = self.handler.recv(1024)
+            if not self.Data:
+                continue
+            else:
+                break
 
     # FunName (  )
     # Desc (  )
@@ -40,7 +41,7 @@ class Listener:
     # Parameters (  )
     # Return Values ( )
     # Created ( 29 / 09 / 22 )
-    def outgoingConnection(self):
+    def outgoingConnection(self, clientName, dataToSend):
         pass
 
     # FunName (  )
