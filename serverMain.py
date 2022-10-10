@@ -14,6 +14,7 @@ class Listener:
         self.host = socket.gethostbyname(socket.gethostname())
         self.running = True
         self.log = []
+        self.port = 56365
 
     # FunName (  )
     # Desc (  )
